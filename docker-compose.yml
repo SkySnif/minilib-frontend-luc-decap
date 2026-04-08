@@ -1,0 +1,51 @@
+services:
+  minilib_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - service_npm_token
+      args:
+        HENDEC_NPM_REGISTERY_HOST: ${HENDEC_NPM_REGISTERY_HOST}
+        HENDEC_NPM_REGISTERY_PORT: ${HENDEC_NPM_REGISTERY_PORT}
+
+    ##### END BUILD CONF - START compose up arg ##########################
+    ports:
+      - "5175:80" # as NGINX is used keep the internal docker port to 80 to avoid confusing nginx configuration - it's a web site
+    environment:
+      PORT: 5175
+      NODE_ENV: development
+      # Variables for the entrypoint. To check if needed but for tracability of services better to keep
+      DB_TYPE: postgres
+      DB_HOST: 192.168.100.10
+      DB_PORT: 5432
+      DB_NAME: minilib
+      DB_USER: minilib_user
+      DB_PASSWORD_FILE: /run/secrets/db_minilib_password
+      SERVICE_TAG_VERSION: V1.0.0 # Use for autodeploy SQL and services version coherency between current deployed image and past   
+      # Variables for VITE app -- OBSELETE : env. variable are not used after build. must be defined during build or put in the .env.
+      # Solution chosen : envsubst < .env.template > .env 
+      VITE_HOST: 192.168.100.10
+      VITE_PORT: 5175
+      VITE_API_MINILIB_HOST: 192.168.100.10
+      VITE_API_MINILIB_PORT: 5001
+      VITE_API_MINILIB_ROUTE: /api/v1
+    secrets:
+      - db_minilib_password
+
+secrets:
+  db_minilib_password:
+    name: db_minilib_password
+    file: /home/afpa/.secrets/AFPA/minilib_db_user
+  service_npm_token:
+    name: service_npm_token
+    file: ${HENDEC_NPM_TOKEN_FILE}
+
+# Outside script for debug
+# export HENDEC_APP_ENVIRONMENT=AFPA
+# export HENDEC_SECRET=${HOME}/.secrets
+# export HENDEC_NPM_REGISTERY_APP_USER=${USER}
+# export HENDEC_NPM_TOKEN_FILE=${HENDEC_SECRET}/${HENDEC_APP_ENVIRONMENT}/nmp_users/${HENDEC_NPM_REGISTERY_APP_USER}_npm_token
+
+# export HENDEC_NPM_REGISTERY_HOST=192.168.100.10
+# export HENDEC_NPM_REGISTERY_PORT=5000
