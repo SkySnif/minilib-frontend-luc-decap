@@ -6,4 +6,10 @@ server {
     index index.html;
     try_files $uri /index.html;
   }
+
+  # Mini lib
+  location ${VITE_API_MINILIB_ROUTE} {
+    proxy_pass http://${VITE_API_MINILIB_HOST}:${VITE_API_MINILIB_PORT}/;
+  }
+
 }
