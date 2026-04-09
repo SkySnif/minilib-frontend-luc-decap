@@ -8,11 +8,6 @@ function App()
 {
   return (
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-      <header className="header">
-        <h1>Bienvenue - Minilib</h1>
-        <input v-model="search" placeholder="Rechercher un livre..." />
-      </header>
-    <p>{window.location.href}</p>
         {BASE_URL}
         <LivresPage />
       </div>
