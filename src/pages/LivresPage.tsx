@@ -4,8 +4,6 @@ import type { Livre } from "../types";
 import { getLivres } from "../services/livreService";
 import LivreCard from "../components/LivreCard";
 
-const BASE_URL = `${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
-
 function LivresPage() 
 {
   // Les 3 états pour tout fetch : données, chargement, erreur
@@ -51,7 +49,7 @@ function LivresPage()
     return (
       <div>
         <p style={{ color: "red" }}>Erreur : {erreur}</p>
-        <p>Vérifiez que le backend tourne sur {BASE_URL}</p>
+        <p>Vérifiez que le backend tourne sur http://${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}</p>
       </div>
     );
   }

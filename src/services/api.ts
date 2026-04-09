@@ -8,7 +8,8 @@
 // TODO2: Check ping or something and logging way in console or other. issue URL : htpp missing in BASE_URL error : raised :
 // Erreur : JSON.parse: unexpected character at line 1 column 1 of the JSON data 
 // Vérifiez que le backend tourne sur 192.168.100.10:5001/api/v1
-const BASE_URL = `http://${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
+//const BASE_URL = `http://${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
+const BASE_URL = `${import.meta.env.VITE_API_MINILIB_ROUTE}`
 
 // Type générique pour uniformiser les réponses
 export interface ApiError 
@@ -28,6 +29,7 @@ export interface ApiError
 export async function apiRequest<T>(endpoint: string, options?: RequestInit):
     Promise<T> 
 {
+    //const response = await fetch(`${BASE_URL}${endpoint}`, 
     const response = await fetch(`${BASE_URL}${endpoint}`, 
         {
             headers: { "Content-Type": "application/json", ...options?.headers },

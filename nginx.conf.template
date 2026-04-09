@@ -8,7 +8,7 @@ server {
 
   # Mini lib
   location ${VITE_API_MINILIB_ROUTE} {
-    proxy_pass http://${VITE_API_MINILIB_HOST}:${VITE_API_MINILIB_PORT}/;
+    proxy_pass http://${VITE_API_MINILIB_HOST}:${VITE_API_MINILIB_PORT};
   }
 
 }
