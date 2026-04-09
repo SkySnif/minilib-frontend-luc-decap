@@ -11,3 +11,22 @@ body {
 
 h1 { color: #1F4E79; margin-bottom: 16px; }
 h2 { color: #2E75B6; margin-bottom: 12px; }
+
+ .menu_droite {
+        background-color: #6e66ff;
+        width: 200px;
+        height: 300px;
+        float: right;
+}
+.menu_gauche {
+        height: 400px;
+        width: 300px;
+        background-color: #1307ff;
+        float: left;
+}
+.corps {
+        background-color: #f5f5f5;
+        margin-left: 310px;/*pour éviter que le bloc corps passe par dessus le menu*/
+        margin-right: 210px;
+        height: 800px;/*hauteur du bloc*/
+}

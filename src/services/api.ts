@@ -45,7 +45,6 @@ export async function apiRequest<T>(endpoint: string, options?: RequestInit):
         );
         throw new Error(erreur.erreur);
     }
-    
     // 204 No Content — pas de corps à parser (DELETE)
     if (response.status === 204) return undefined as T;
     

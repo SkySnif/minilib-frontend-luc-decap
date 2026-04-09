@@ -7,14 +7,18 @@ import { apiRequest } from "./api";
 * Récupère tous les livres avec filtres optionnels.
 * @param filtres - genre, disponible, recherche
 */
-export async function getLivres(filtres: FiltresLivre = {}): Promise<Livre[]> {
+export async function getLivres(filtres: FiltresLivre = {}): Promise<Livre[]> 
+{
     // Construire les query params depuis les filtres non-undefined
     const params = new URLSearchParams();
+
     if (filtres.genre) params.append("genre", filtres.genre);
     if (filtres.recherche) params.append("recherche", filtres.recherche);
     if (filtres.disponible !== undefined)
         params.append("disponible", String(filtres.disponible));
+
     const query = params.toString() ? `?${params.toString()}` : "";
+
     return apiRequest<Livre[]>(`/livres${query}`);
 }
 

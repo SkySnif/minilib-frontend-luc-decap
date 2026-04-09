@@ -6,36 +6,48 @@ import LivreCard from "../components/LivreCard";
 
 const BASE_URL = `${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
 
-function LivresPage() {
+function LivresPage() 
+{
   // Les 3 états pour tout fetch : données, chargement, erreur
   const [livres,     setLivres]     = useState<Livre[]>([]);
   const [chargement, setChargement] = useState<boolean>(true);
   const [erreur,     setErreur]     = useState<string | null>(null);
 
   // Chargement au montage du composant
-  useEffect(() => {
-    const chargerLivres = async () => {
-      try {
-        setChargement(true);
-        setErreur(null);
-        const data = await getLivres();
-        setLivres(data);
-      } catch (err) {
-        setErreur(err instanceof Error ? err.message : "Erreur inconnue");
-      } finally {
-        setChargement(false);
-      }
-    };
+  useEffect(
+    () => 
+      {
+        const chargerLivres = async () => 
+        {
+          try 
+          {
+            setChargement(true);
+            setErreur(null);
+            const data = await getLivres();
+            setLivres(data);
+          }
+          catch (err) 
+          {
+            setErreur(err instanceof Error ? err.message : "Erreur inconnue");
+          } 
+          finally 
+          {
+            setChargement(false);
+          }
+        };
 
-    chargerLivres();
-  }, []); // [] = une seule fois au montage
+        chargerLivres();
+      }, 
+      []
+  ); // [] = une seule fois au montage
 
   // ── Rendu conditionnel ──────────────────────────────────────
   if (chargement) {
     return <p>Chargement du catalogue...</p>;
   }
 
-  if (erreur) {
+  if (erreur) 
+  {
     return (
       <div>
         <p style={{ color: "red" }}>Erreur : {erreur}</p>
