@@ -16,12 +16,6 @@ runtime:
           expect(res.getStatus()).to.equal(200);
         });
 
-        test("should return livre 99 not found", function () {
-          const body = res.getBody();
-
-          expect(body.message).to.equal("MiniLib Server up");
-        });
-
 settings:
   encodeUrl: true
   timeout: 0

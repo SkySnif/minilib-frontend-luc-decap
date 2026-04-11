@@ -42,7 +42,8 @@ function LivresPage()
   ); // [] = une seule fois au montage
 
   // ── Rendu conditionnel ──────────────────────────────────────
-  if (chargement) {
+  if (chargement) 
+  {
     return <p>Chargement du catalogue...</p>;
   }
 
