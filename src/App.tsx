@@ -1,17 +1,67 @@
 // frontend/src/App.tsx — version finale du jour
 import "./index.css";
-import LivresPage from "./pages/LivresPage.js";
 
-const BASE_URL = `http://${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App() 
-{
+import { MainPage, LivresPageUpdate, LivresPageRechercher, LivresList } from "./pages/index";
+
+function App() {
   return (
-      <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-        {BASE_URL}
-        <LivresPage />
-      </div>
-    );
+    <BrowserRouter>
+      <Routes>
+
+        {/* Layout principal */}
+        <Route path="/" element={<MainPage />}>
+
+          {/* pages */}
+          <Route index element={<h1>Home</h1>} />
+
+          {/* livres */}
+          <Route path="livres">
+
+            <Route path="search" element={<LivresPageRechercher />}>
+              <Route path="list" element={<LivresList />} />
+            </Route>
+
+            <Route path="update/:id" element={<LivresPageUpdate />} />
+
+            <Route path="create/:id" element={<h1>Créer</h1>} />
+            <Route path="delete/:id" element={<h1>Supprimer</h1>} />
+          </Route>
+
+          {/* adherents */}
+          <Route path="adherents">
+
+            <Route path="search" element={<LivresPageRechercher />}>
+              <Route path="list" element={<LivresList />} />
+            </Route>
+
+            <Route path="update" element={<h1>Créer</h1>} />
+
+            <Route path="create" element={<h1>Créer</h1>} />
+            <Route path="delete" element={<h1>Supprimer</h1>} />
+          </Route>
+
+          {/* emprunts */}
+          <Route path="adherents">
+
+            <Route path="search" element={<LivresPageRechercher />}>
+              <Route path="list" element={<LivresList />} />
+            </Route>
+
+            <Route path="update" element={<h1>Créer</h1>} />
+
+            <Route path="create" element={<h1>Créer</h1>} />
+            <Route path="delete" element={<h1>Supprimer</h1>} />
+          </Route>
+
+          <Route path="contact" element={<h1>Contact</h1>} />
+
+        </Route>
+
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

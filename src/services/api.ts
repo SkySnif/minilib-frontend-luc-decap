@@ -25,17 +25,25 @@ export interface ApiError
 * @param options - Options fetch standard (method, body, headers)
 * @returns - La réponse parsée en JSON typée T
 */
-export async function apiRequest<T>(endpoint: string, options?: RequestInit):
-    Promise<T> 
+export async function apiRequest<T>(
+    endpoint: string, 
+    options?: RequestInit
+): Promise<T> 
 {
     //const response = await fetch(`${BASE_URL}${endpoint}`, 
-    const response = await fetch(`${BASE_URL}${endpoint}`, 
+    const response = await fetch(
+        `${BASE_URL}${endpoint}`, 
         {
-            headers: { "Content-Type": "application/json", ...options?.headers },
+            headers: 
+            { 
+                "Content-Type": "application/json",
+                ...options?.headers 
+            },
             ...options,
         }
     );
 
+    //TODO: Raise error if message ok but message status is error
     if (!response.ok) 
     {
         const erreur: ApiError = await response.json().catch(() => (
@@ -46,8 +54,14 @@ export async function apiRequest<T>(endpoint: string, options?: RequestInit):
         );
         throw new Error(erreur.erreur);
     }
+
     // 204 No Content — pas de corps à parser (DELETE)
-    if (response.status === 204) return undefined as T;
+    if (response.status === 204) 
+        return undefined as T;
     
+    // 404 Content — mais livres non trouvé
+    if (response.status === 404) 
+        throw new Error("404: No data");
+        
     return response.json() as Promise<T>;
 }

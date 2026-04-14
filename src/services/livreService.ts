@@ -1,19 +1,26 @@
 // ── frontend/src/services/livreService.ts ───────────────────────
 // Toutes les opérations sur les livres — encapsule les appels API
-import type { Livre, CreateLivreDto, FiltresLivre } from "../types/livre";
+import type { Livre, CreateLivreDto, FiltresLivre } from "@hendec/types/minilib";
 import { apiRequest } from "./api";
 
 /**
 * Récupère tous les livres avec filtres optionnels.
 * @param filtres - genre, disponible, recherche
 */
-export async function getLivres(filtres: FiltresLivre = {}): Promise<Livre[]> 
+
+export async function getLivres(
+    filtres: FiltresLivre = {}
+): Promise<Livre[]> 
 {
     // Construire les query params depuis les filtres non-undefined
     const params = new URLSearchParams();
 
-    if (filtres.genre) params.append("genre", filtres.genre);
-    if (filtres.recherche) params.append("recherche", filtres.recherche);
+    if (filtres.genre) 
+        params.append("genre", filtres.genre);
+
+    if (filtres.recherche) 
+        params.append("recherche", filtres.recherche);
+
     if (filtres.disponible !== undefined)
         params.append("disponible", String(filtres.disponible));
 
@@ -25,7 +32,10 @@ export async function getLivres(filtres: FiltresLivre = {}): Promise<Livre[]>
 /**
 * Récupère un livre par son id.
 */
-export async function getLivreById(id: number): Promise<Livre> {
+export async function getLivreById(
+    id: number
+): Promise<Livre> 
+{
     return apiRequest<Livre>(`/livres/${id}`);
 }
 
@@ -45,3 +55,15 @@ export async function creerLivre(data: CreateLivreDto): Promise<Livre> {
 export async function supprimerLivre(id: number): Promise<void> {
     return apiRequest<void>(`/livres/${id}`, { method: "DELETE" });
 }
+
+
+export const updateLivre = async ( 
+    data:Partial<Livre>
+): Promise<Livre|null> => 
+{
+    return apiRequest<Livre>(`/livres/${data.id}`, 
+        {
+            method: "PUT",
+            body: JSON.stringify(data),
+        });
+};

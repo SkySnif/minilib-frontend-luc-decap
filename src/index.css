@@ -12,21 +12,166 @@ body {
 h1 { color: #1F4E79; margin-bottom: 16px; }
 h2 { color: #2E75B6; margin-bottom: 12px; }
 
- .menu_droite {
-        background-color: #6e66ff;
-        width: 200px;
-        height: 300px;
-        float: right;
+/********************************************************************/
+/************ RECHERCHE *********************************************/
+/********************************************************************/
+#mainPage
+{ 
+  display: flex;
+  height: fit-content
 }
-.menu_gauche {
-        height: 400px;
-        width: 300px;
-        background-color: #1307ff;
-        float: left;
+
+
+#floating_message
+{
+  display: flex;
+  flex-flow: column;
+  font-weight: bold;
+  font-size: larger;
 }
-.corps {
-        background-color: #f5f5f5;
-        margin-left: 310px;/*pour éviter que le bloc corps passe par dessus le menu*/
-        margin-right: 210px;
-        height: 800px;/*hauteur du bloc*/
+
+#edit_title{
+  color: #2E75B6;
+  margin-bottom: 12px;
+  font-size: larger;
+  font-style: oblique;
+  font-weight: bold;
 }
+
+
+#edit_label{
+  display: inline;
+  padding: 1px;
+  margin-bottom: 1px;
+}
+
+#edit{
+  display: inline;
+  margin-left: 10px;
+  margin-top: 8px;
+  margin-bottom: 1px;
+  margin: 7px;
+  background-color: #ffffff2a;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #1B5E20;
+}
+
+button#edit{
+         display: inline;
+         margin-left: 10px;
+         margin-top: 8px;
+         padding: 2px 10px;
+         border-radius: 12px;
+         font-size: 13px;
+         font-weight: bold;
+         background-color: #120fe02a;
+         color: #1B5E20;
+}
+
+button#edit:hover {
+  background-color: #0a06faab;
+  outline: none; /* optionnel */
+}
+
+/********************************************************************/
+/************ RECHERCHE *********************************************/
+/********************************************************************/
+
+form #recherche{
+  font-style: italic;
+  display: inline;
+  padding-inline: 1%;
+  color: #00bcd4;
+}
+
+form #label #input #recherche{
+  font-style: italic;
+  display: inline;
+  padding-inline: 1%;
+  color: "black";
+}
+
+form #recherche_title{
+  color: #2E75B6;
+  margin-bottom: 12px;
+  font-size: larger;
+  font-style: oblique;
+  font-weight: bold;
+}
+
+button#buttonActive{
+         display: inline-block;
+         margin-left: 10px;
+         margin-top: 8px;
+         padding: 2px 10px;
+         border-radius: 12px;
+         font-size: 13px;
+         font-weight: bold;
+         background-color: #E8F5E9;
+         color: #1B5E20;
+}
+
+button#buttonInactive{
+         display: inline-block;
+         margin-left: 10px;
+         margin-top: 8px;
+         padding: 2px 10px;
+         border-radius: 12px;
+         font-size: 13px;
+         font-weight: bold;
+         background-color: gray;
+         color: darkgray;
+         pointer-events: none;
+          cursor: default;
+}
+
+
+button[type="submit"]#buttonActive:hover {
+  background-color:#1db82a;
+  outline: none; /* optionnel */
+}
+
+
+button[type="submit"]#recherche:hover {
+  background-color: gray;
+  outline: none; /* optionnel */
+}
+
+
+#navbar #menu{
+  display: block;
+  list-style-type: disc;
+  margin-top: 0em;
+  margin-bottom: 1 em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 16px;
+  color: "blue";
+}
+
+#navbar #menu #submenu{
+  display: block;
+  list-style-type: square;
+  margin-top: 0em;
+  margin-bottom: 1 em;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 16px;
+  color: "blue";
+}
+
+
+section#main{
+  width: 500px;
+  float: inline-start;
+  margin: 0;
+  padding: 0;
+  display: inline;
+ }
+
+/******************************************************************************************************************************/
+/******************************************************************************************************************************/
+/******************************************************************************************************************************/
