@@ -5,13 +5,19 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import type { NavigateFunction }  from "react-router-dom";
 
-import { getLivreById, updateLivre } from "../../../services/livreService";
+import { ZodType } from "zod";
+
+import { livreResponseSchema } from "@hendec/types/minilib"; // for zod validation
 import type { Livre } from "@hendec/types/minilib";
 
-import type { infoMessage } from "../../../types/index";
+import { getLivreById, updateLivre } from "../../../services/livreService";
 
+// tmp type to put in @hendec - review format and validation/enum
+import type { infoMessage } from "../../../types/index";
 // Tmp auth for test button Delete, Edit or Emprunt
 import { useAuth } from "../../../auth/auth"
+
+
 
 /**
  * Search for livres
@@ -20,7 +26,7 @@ import { useAuth } from "../../../auth/auth"
 export function LivresPageUpdate()
 {
 
-  const v_navigate: NavigateFunction = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
   const { id } = useParams();
 
   const [livre,     setLivre]     = useState<Livre>();
@@ -31,9 +37,9 @@ export function LivresPageUpdate()
   // Retrieve context rigths
   const { isallowToEdit } = useAuth();
 
+  // Check access rigth
   if ( !isallowToEdit)
-    v_navigate( '/');
-
+    navigate( '/');
 
   // Chargement au montage du composant
   useEffect(
@@ -49,7 +55,7 @@ export function LivresPageUpdate()
           const data: Livre = await getLivreById(Number(id));
           setLivre(data);
         }
-        catch (err) 
+        catch (err: any) 
         {
           alert( "Error catched");
           setErreur(err instanceof Error ? err.message : "Erreur inconnue");
@@ -71,7 +77,6 @@ export function LivresPageUpdate()
     return <p>Chargement du catalogue...</p>;
   }
 
-  
   if (erreur) 
   {
     return (
@@ -85,17 +90,28 @@ export function LivresPageUpdate()
   if (!livre) 
     return <p>Livre Introuvable</p>;
 
-
 const handleUpdate = async () => {
   if (!livre) return;
     try
     {
-      const retour: Livre|null=await updateLivre(livre);
-      setMessage( { status : "ok", message: "Mise à jours done" } );
+      const v_livreValidated = livreResponseSchema.safeParse(livre);
+
+      if (!v_livreValidated.success) 
+      {
+        setMessage( { status : "ko", message: `Livre data invalide : ${v_livreValidated.error}` } );
+      }
+      else
+      {
+        if ( confirm(`Etes-vous sure de vouloir mettre à jours le livre "${v_livreValidated.data.titre}" !`) == true) 
+          {
+            await updateLivre(v_livreValidated.data);
+            setMessage( { status : "ok", message: "Mise à jours done" } );
+          }
+      }
     }
-    catch (err) 
+    catch (err: any) 
     {
-      setMessage( { status : "ko", message: "Mise à jours failed" } );
+      setMessage( { status : "ko", message: `Mise à jours failed: ${err.message}` } );
     }
 };
 
@@ -169,7 +185,7 @@ const handleUpdate = async () => {
         onChange={(e) =>
           setLivre( { ...livre, genre: e.target.value })}
       >
-        <option value={livre.genre ?? "N/A"}>{livre.genre}</option>
+        <option value={livre.genre ?? ""}>{livre.genre}</option>
         <option value="Fantasy">Fantasy</option>
         <option value="Autres">Autres</option>
         <option value="false">Indisponible</option>
@@ -184,13 +200,13 @@ const handleUpdate = async () => {
         id="edit"
         type="button"
         value="Retour"
-        onClick={() => v_navigate(-1)}
+        onClick={() => navigate(-1)}
       >
       Retour
     </button>
-      <div id="floating_message" style={{backgroundColor: feedbackMessage.status == "ok" ? "#21a315e3": "#e4243e" }}>
-        {feedbackMessage.message}
-      </div>
+    <div id="floating_message" style={{backgroundColor: feedbackMessage.status == "ok" ? "#21a315e3": "#e4243e" }}>
+      {feedbackMessage.message}
+    </div>
   </div>
   )
 }

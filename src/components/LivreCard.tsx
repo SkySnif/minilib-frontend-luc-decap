@@ -70,7 +70,7 @@ function LivreCard(
         (
             <button 
               type="submit" 
-              id={ livre.disponible ? "buttonActive" : "buttonInactive"}
+              id="buttonActive"
               onClick={onEdit}
             >
               Editer

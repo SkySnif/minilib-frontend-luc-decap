@@ -3,7 +3,11 @@ import "./index.css";
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { MainPage, LivresPageUpdate, LivresPageRechercher, LivresList } from "./pages/index";
+// Main page
+import { MainPage } from "./pages/index";
+
+// Livres page (can be with main page as ./pages/index include all but for proper reference import separatly)
+import { LivresPageCreate, LivresPageUpdate, LivresPageRechercher, LivresList } from "./pages/livres/index";
 
 function App() {
   return (
@@ -18,15 +22,14 @@ function App() {
 
           {/* livres */}
           <Route path="livres">
+            <Route path="list" element={<LivresList />} />
 
-            <Route path="search" element={<LivresPageRechercher />}>
+            <Route path="search" element={<LivresPageRechercher />} >
               <Route path="list" element={<LivresList />} />
             </Route>
-
+            
             <Route path="update/:id" element={<LivresPageUpdate />} />
-
-            <Route path="create/:id" element={<h1>Créer</h1>} />
-            <Route path="delete/:id" element={<h1>Supprimer</h1>} />
+            <Route path="create/" element={<LivresPageCreate />} />
           </Route>
 
           {/* adherents */}

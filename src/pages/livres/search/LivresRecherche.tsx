@@ -15,7 +15,7 @@ export function LivresRecherche()
   const [v_FiltreLivre, setFiltreLivres] = useState<FiltresLivre>({});
   const [v_DisponibleString, setDisponible] = useState<string>("all");
 
-  const v_navigate: NavigateFunction = useNavigate();
+  const navigate: NavigateFunction = useNavigate();
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,7 +39,7 @@ export function LivresRecherche()
       });
 
       // navigate to the Route list - no need to put the full path livres/search/
-      v_navigate(`list?${params.toString()}`);
+      navigate(`list?${params.toString()}`);
   }
 
   return (

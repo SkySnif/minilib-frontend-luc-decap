@@ -5,6 +5,7 @@ import type AuthContextType from "react";
 type AuthContextType = 
 {
     isallowToEdit: boolean;
+    isallowToCreate: boolean;
     isallowToDelete: boolean;
     isAllowToBook: boolean;
     AdherentUserName?: string;
@@ -13,6 +14,7 @@ type AuthContextType =
 const AuthContext = createContext<AuthContextType>(
     { 
         isallowToEdit: true,
+        isallowToCreate: true,
         isallowToDelete: true,
         isAllowToBook: true
     }

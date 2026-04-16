@@ -20,10 +20,9 @@ export function MainPage() {
           <li>
             Livres
             <ul id="submenu">
+              <li><NavLink to="/livres/list" className={({ isActive }) => isActive ? "active" : ""}>Liste</NavLink></li>
               <li><NavLink to="/livres/search" className={({ isActive }) => isActive ? "active" : ""}>Rechercher</NavLink></li>
               <li><NavLink to="/livres/create" className={({ isActive }) => isActive ? "active" : ""}>Créer</NavLink></li>
-              <li><NavLink to="/livres/update" className={({ isActive }) => isActive ? "active" : ""}>Mettre à jours</NavLink></li>
-              <li><NavLink to="/livres/delete" className={({ isActive }) => isActive ? "active" : ""}>Supprimer</NavLink></li>
             </ul>
           </li>
 
@@ -32,7 +31,9 @@ export function MainPage() {
       {/* </nav> */}
       </aside>
 
-      <Outlet />
+     <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+        <Outlet />
+      </div>
 
     </div>
   );
