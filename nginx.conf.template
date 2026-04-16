@@ -1,15 +1,42 @@
 server {
   listen 80;
+  server_name _;
+
+  # -----------------------
+  # FRONTEND (React SPA)
+  # -----------------------
+  root /usr/share/nginx/html;
+  index index.html;
 
   location / {
-    root /usr/share/nginx/html;
-    index index.html;
-    try_files $uri $uri/ /index.html;   
+    try_files $uri $uri/ /index.html;
   }
 
-  # Mini lib
-  location ${VITE_API_MINILIB_ROUTE} {
-    proxy_pass http://${VITE_API_MINILIB_HOST}:${VITE_API_MINILIB_PORT};
+  # Cache des assets statiques (JS/CSS/images)
+  location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico|woff2?)$ {
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+    try_files $uri =404;
   }
 
+  # -----------------------
+  # API BACKEND
+  # -----------------------
+  location ${VITE_API_MINILIB_ROUTE}/ {
+    proxy_pass http://${VITE_API_MINILIB_HOST}:${VITE_API_MINILIB_PORT}/;
+
+    # headers standards reverse proxy
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+
+    # évite certains blocages WebSocket / keepalive
+    proxy_set_header Connection "";
+  }
+
+  # (optionnel) logs
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
 }
