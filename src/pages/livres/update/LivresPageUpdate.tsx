@@ -5,8 +5,6 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import type { NavigateFunction }  from "react-router-dom";
 
-import { ZodType } from "zod";
-
 import { livreResponseSchema } from "@hendec/types/minilib"; // for zod validation
 import type { Livre } from "@hendec/types/minilib";
 

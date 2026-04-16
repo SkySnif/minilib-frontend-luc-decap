@@ -11,9 +11,6 @@ importers:
       '@hendec/frontend':
         specifier: ^0.0.1
         version: 0.0.1
-      '@hendec/types':
-        specifier: ^0.0.1
-        version: 0.0.1
       react:
         specifier: ^19.2.4
         version: 19.2.5
@@ -185,9 +182,6 @@ packages:
 
   '@hendec/frontend@0.0.1':
     resolution: {integrity: sha512-zHiKzcKkWOJrj3OnY7kVEEBlTk7Pa1G6qJGmzyPcJG0u3e4Tb6m++TWe0pYk2Xjj7D9OCeUOGq+iNvLx49tTRA==}
-
-  '@hendec/types@0.0.1':
-    resolution: {integrity: sha512-tKThUFln20Wi3csB8XrYvcNtGe+Nk38RBRHWDlRI4+xc47O880s+AOyW5PwplWW2MNpopx1QdXfezC6BbOlxIg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -1206,10 +1200,6 @@ snapshots:
   '@hendec/frontend@0.0.1':
     dependencies:
       '@hendec/core': 0.0.1
-
-  '@hendec/types@0.0.1':
-    dependencies:
-      zod: 4.3.6
 
   '@humanfs/core@0.19.1': {}
 
