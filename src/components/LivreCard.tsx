@@ -82,8 +82,9 @@ function LivreCard(
         (
             <button 
               type="submit" 
-              id={ livre.disponible ? "buttonActive" : "buttonInactive"}
+              id={ livre.disponible ? "buttonActive" : "buttonInactive" }
               onClick={onDelete}
+              disabled={!livre.disponible}
             >
               Suppprimer
             </button>

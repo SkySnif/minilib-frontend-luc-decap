@@ -8,6 +8,7 @@ type AuthContextType =
     isallowToCreate: boolean;
     isallowToDelete: boolean;
     isAllowToBook: boolean;
+    AdherentUserId?: string;
     AdherentUserName?: string;
 };
 

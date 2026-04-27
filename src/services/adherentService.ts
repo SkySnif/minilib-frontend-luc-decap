@@ -1,69 +1,91 @@
-// ── frontend/src/services/livreService.ts ───────────────────────
-// Toutes les opérations sur les livres — encapsule les appels API
-import type { Livre, CreateLivreDto, FiltresLivre } from "@hendec/types/minilib";
+// ── frontend/src/services/adherentService.ts ───────────────────────
+// Toutes les opérations sur les adherents — encapsule les appels API
+import { adherentResponseSchema, createAdherentSchema } from "@hendec/types/minilib";
+import type { CreateAdherentDto, FilterAdherentDto, UpdateAdherentDto, DeleteAdherentDto, AdherentResponseDto} from "@hendec/types/minilib";
 import { apiRequest } from "./api";
 
+
+const g_routeDirMember="adherents"
 /**
-* Récupère tous les livres avec filtres optionnels.
+* Récupère tous les adherents avec filtres optionnels.
 * @param filtres - genre, disponible, recherche
 */
 
-export async function getLivres(
-    filtres: FiltresLivre = {}
-): Promise<Livre[]> 
+export async function getAdherents(
+    p_filtres: FilterAdherentDto = {}
+): Promise<AdherentResponseDto[]> 
 {
     // Construire les query params depuis les filtres non-undefined
     const params = new URLSearchParams();
 
-    if (filtres.genre) 
-        params.append("genre", filtres.genre);
-
-    if (filtres.recherche) 
-        params.append("recherche", filtres.recherche);
-
-    if (filtres.disponible !== undefined)
-        params.append("disponible", String(filtres.disponible));
+    Object.entries(p_filtres).forEach(([v_ParamName, v_ParamValue]) => 
+    {
+        if (v_ParamValue !== undefined && v_ParamValue !== "") {
+        params.append(v_ParamName, String(v_ParamValue));
+        }
+    });
 
     const query = params.toString() ? `?${params.toString()}` : "";
 
-    return apiRequest<Livre[]>(`/livres${query}`);
+    return apiRequest<AdherentResponseDto[]>(`${g_routeDirMember}${query}`);
 }
 
 /**
-* Récupère un livre par son id.
+* Récupère un adherent par son id.
 */
-export async function getLivreById(
+export async function getAdherentById(
     id: number
-): Promise<Livre> 
+): Promise<AdherentResponseDto> 
 {
-    return apiRequest<Livre>(`/livres/${id}`);
+    return apiRequest<AdherentResponseDto>(`${g_routeDirMember}/${id}`);
 }
 
 /**
-* Crée un nouveau livre.
+* Create a member
 */
-export async function creerLivre(data: CreateLivreDto): Promise<Livre> {
-    return apiRequest<Livre>("/livres", {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
+export async function creerAdherents(
+    data: CreateAdherentDto
+): Promise<AdherentResponseDto> 
+{
+    return apiRequest<AdherentResponseDto>(`${g_routeDirMember}`, adherentResponseSchema, 
+        {
+            method: "POST",
+            body: JSON.stringify(data),
+        }
+    );
 }
 
 /**
-* Supprime un livre.
+* Delete a member
 */
-export async function supprimerLivre(id: number): Promise<void> {
-    return apiRequest<void>(`/livres/${id}`, { method: "DELETE" });
+export async function supprimerAdherent
+(
+    p_data: DeleteAdherentDto
+): Promise<void> {
+    return apiRequest<void>(`${g_routeDirMember}/${p_data.id}`, 
+        undefined,
+        { 
+            method: "DELETE" 
+        }
+    );
 }
 
 
-export const updateLivre = async ( 
-    data:Partial<Livre>
-): Promise<Livre|null> => 
+/**
+* Update a member
+* id is not a part of the update message as it cannot be updated
+*/
+export const updateAdherent = async ( 
+    p_id: number,
+    p_data: UpdateAdherentDto
+): Promise<AdherentResponseDto | null> => 
 {
-    return apiRequest<Livre>(`/livres/${data.id}`, 
+    
+    return apiRequest<AdherentResponseDto>(`${g_routeDirMember}/${p_id}`, 
+        adherentResponseSchema,
         {
             method: "PUT",
-            body: JSON.stringify(data),
-        });
+            body: JSON.stringify(p_data),
+        }
+    );
 };

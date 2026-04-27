@@ -1,21 +1,22 @@
-// frontend/src/pages/LivresPage.tsx
+// frontend/src/pages/adherentsPage.tsx
 
 import { Outlet } from 'react-router-dom';
 
-import { LivresRecherche } from './LivresRecherche';
+import { adherentsRecherche } from './adherentsRecherche';
 
-export function LivresPageRechercher() 
+export function adherentsPageRechercher() 
 {
   return (
      <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
       
-        {/* header */}
+        {/* BARRE HAUT */}
         <header style={{ padding: "1rem", borderBottom: "3px solid #ccc" }}>
-          <LivresRecherche />
+          <adherentsRecherche />
         </header>
 
-        {/* contenaire */}
+        {/* CONTENU */}
         <main style={{ padding: "1rem", flex: 1 }}>
+          {/* Contenu dynamique */}
           <Outlet />
         </main>
     </div>

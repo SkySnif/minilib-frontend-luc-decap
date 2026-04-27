@@ -9,11 +9,10 @@ import { NavLink, Outlet } from 'react-router-dom';
 export function MainPage() {
   return (
     <div id="mainPage">
-      
-      {/* MENU GAUCHE */}
+
+      {/* Left menu */}
       <aside id="navbar">
-      {/* <nav id="navbar"> */}
- 
+
         <ul id="menu">
           <li><NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>Home</NavLink></li>
 
@@ -23,6 +22,23 @@ export function MainPage() {
               <li><NavLink to="/livres/list" className={({ isActive }) => isActive ? "active" : ""}>Liste</NavLink></li>
               <li><NavLink to="/livres/search" className={({ isActive }) => isActive ? "active" : ""}>Rechercher</NavLink></li>
               <li><NavLink to="/livres/create" className={({ isActive }) => isActive ? "active" : ""}>Créer</NavLink></li>
+            </ul>
+          </li>
+
+          <li>
+            Adherents
+            <ul id="submenu">
+              <li><NavLink to="/adherents/list" className={({ isActive }) => isActive ? "active" : ""}>Liste</NavLink></li>
+              <li><NavLink to="/adherents/search" className={({ isActive }) => isActive ? "active" : ""}>Rechercher</NavLink></li>
+              <li><NavLink to="/adherents/create" className={({ isActive }) => isActive ? "active" : ""}>Créer</NavLink></li>
+            </ul>
+          </li>
+
+          <li>
+            Emprunts
+            <ul id="submenu">
+              <li><NavLink to="/emprunts/list" className={({ isActive }) => isActive ? "active" : ""}>Liste</NavLink></li>
+              <li><NavLink to="/emprunts/search" className={({ isActive }) => isActive ? "active" : ""}>Rechercher</NavLink></li>
             </ul>
           </li>
 

@@ -1,19 +1,19 @@
-// frontend/src/pages/LivresRecherche
+// frontend/src/pages/adherentsRecherche
 import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import type { NavigateFunction }  from "react-router-dom";
 
-import type { FiltresLivreDto } from "@hendec/types/minilib";
+import type { FiltresadherentDto } from "@hendec/types/minilib";
 
 /**
- * Search for livres
+ * Search for adherents
  *
  */
-export function LivresRecherche() 
+export function adherentsRecherche() 
 {
-  const [filtreLivre, setFiltreLivres] = useState<FiltresLivreDto>({});
-  const [disponibleString, setDisponible] = useState<string>("all");
+  const [v_Filtreadherent, setFiltreadherents] = useState<FiltresadherentDto>({});
+  const [v_DisponibleString, setDisponible] = useState<string>("all");
 
   const navigate: NavigateFunction = useNavigate();
 
@@ -21,12 +21,12 @@ export function LivresRecherche()
     e.preventDefault();
 
       const disponible =
-        disponibleString === "all"
+        v_DisponibleString === "all"
           ? undefined
-          : disponibleString === "available";
+          : v_DisponibleString === "available";
 
-      const v_FiltreFinal: FiltresLivreDto = {
-        ...filtreLivre,
+      const v_FiltreFinal: FiltresadherentDto = {
+        ...v_Filtreadherent,
         disponible
       };
 
@@ -38,29 +38,29 @@ export function LivresRecherche()
         }
       });
 
-      // navigate to the Route list - no need to put the full path livres/search/
+      // navigate to the Route list - no need to put the full path adherents/search/
       navigate(`list?${params.toString()}`);
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <label id="recherche_title">
-        <p>Recherche de livres :</p>
+        <p>Recherche de adherents :</p>
       </label>
 
       <label id="recherche">Titre :</label>
         <input id="recherche"
-          value={filtreLivre.recherche ?? ""}
+          value={v_Filtreadherent.recherche ?? ""}
           onChange={(e) =>
-              setFiltreLivres((prev) => ({ ...prev, recherche: e.target.value }))
+              setFiltreadherents((prev) => ({ ...prev, recherche: e.target.value }))
             }
       />
 
       <label id="recherche">Genre :</label>
       <input id="recherche"
-        value={filtreLivre.genre ?? ""}
+        value={v_Filtreadherent.genre ?? ""}
         onChange={(e) =>
-          setFiltreLivres((prev) => ({ ...prev, genre: e.target.value }))
+          setFiltreadherents((prev) => ({ ...prev, genre: e.target.value }))
         }
       />
 
@@ -68,7 +68,7 @@ export function LivresRecherche()
         Disponible : 
       </label>
       <select id="recherche"
-        value={disponibleString ?? "all"}
+        value={v_DisponibleString ?? "all"}
         onChange={(e) => setDisponible( e.target.value)}
       >
         <option value="all">Tous</option>

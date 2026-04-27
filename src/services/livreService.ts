@@ -1,6 +1,12 @@
 // ── frontend/src/services/livreService.ts ───────────────────────
 // Toutes les opérations sur les livres — encapsule les appels API
-import type { Livre, CreateLivreDto, FiltresLivre } from "@hendec/types/minilib";
+
+import type { ParamIdDto } from "@hendec/types/param";
+import  {  paramIdSchema } from "@hendec/types/param";
+
+import type { CreateLivreDto, FiltresLivreDto, UpdateLivreDto, LivreResponseDto } from "@hendec/types/minilib";
+import {  livreResponseSchema, updateLivreSchema, livresResponseSchema } from "@hendec/types/minilib";
+
 import { apiRequest } from "./api";
 
 /**
@@ -9,8 +15,8 @@ import { apiRequest } from "./api";
 */
 
 export async function getLivres(
-    filtres: FiltresLivre = {}
-): Promise<Livre[]> 
+    filtres: FiltresLivreDto = {}
+): Promise<LivreResponseDto[]> 
 {
     // Construire les query params depuis les filtres non-undefined
     const params = new URLSearchParams();
@@ -26,44 +32,84 @@ export async function getLivres(
 
     const query = params.toString() ? `?${params.toString()}` : "";
 
-    return apiRequest<Livre[]>(`/livres${query}`);
+    return apiRequest<LivreResponseDto[]>(
+        {
+            schemaRespond: livresResponseSchema,
+            endpoint: `/livres${query}`
+        }
+    );
 }
 
 /**
 * Récupère un livre par son id.
 */
 export async function getLivreById(
-    id: number
-): Promise<Livre> 
+    paramGetbyId: ParamIdDto
+): Promise<LivreResponseDto> 
 {
-    return apiRequest<Livre>(`/livres/${id}`);
+       return apiRequest<LivreResponseDto>(
+        {
+            schemaParam: paramIdSchema,
+            schemaRespond: livreResponseSchema,
+            endpoint: `/livres/${paramGetbyId.id}`
+        }
+    );
 }
 
 /**
 * Crée un nouveau livre.
 */
-export async function creerLivre(data: CreateLivreDto): Promise<Livre> {
-    return apiRequest<Livre>("/livres", {
-        method: "POST",
-        body: JSON.stringify(data),
-    });
+export async function creerLivre(
+    data: CreateLivreDto
+): Promise<LivreResponseDto> 
+{
+    return apiRequest<LivreResponseDto>(
+        {
+            schemaRespond: livreResponseSchema,
+            endpoint: `/livres`,
+            options:
+            {
+                method: "POST",
+                body: JSON.stringify(data),
+            }
+        }
+    );
 }
 
 /**
 * Supprime un livre.
 */
 export async function supprimerLivre(id: number): Promise<void> {
-    return apiRequest<void>(`/livres/${id}`, { method: "DELETE" });
+    return apiRequest<void>(
+        {
+            schemaParam: paramIdSchema,
+            endpoint: `/livres/${id}`,
+            options: { method: "DELETE" }
+        }
+    );
+
 }
 
-
+/**
+ * update book
+ */
 export const updateLivre = async ( 
-    data:Partial<Livre>
-): Promise<Livre|null> => 
+    paramUpdateLivre: ParamIdDto,
+    data: UpdateLivreDto
+): Promise<LivreResponseDto> => 
 {
-    return apiRequest<Livre>(`/livres/${data.id}`, 
+
+   return apiRequest<LivreResponseDto>(
         {
-            method: "PUT",
-            body: JSON.stringify(data),
-        });
+            schemaParam: paramIdSchema,
+            schemaBody: updateLivreSchema,
+            schemaRespond: livreResponseSchema,
+            endpoint: `/livres/${paramUpdateLivre.id}`,
+            options:
+            {
+                method: "PUT",
+                body: JSON.stringify(data),
+            }
+        }
+    );
 };

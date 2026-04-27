@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "lib-install": "pnpm uninstall @hendec/types; pnpm install @hendec/types; pnpm uninstall @hendec/frontend; pnpm install @hendec/frontend",
+    "lib-install": " rm -rf node_modules/ pnpm-lock.yaml && pnpm install",
     "dev": "npm run lib-install && vite",
     "example": "vite --mode example",
     "build": "tsc -b && vite build",
@@ -14,8 +14,10 @@
   "dependencies": {
     "@hendec/frontend": "^0.0.1",
     "@hendec/types": "^0.0.1",
+    "@hookform/resolvers": "^5.2.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-hook-form": "^7.73.1",
     "react-router-dom": "^7.14.0",
     "zod": "^4.3.6"
   },

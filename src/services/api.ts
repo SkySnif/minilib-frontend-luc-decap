@@ -1,3 +1,7 @@
+import type { ZodSafeParseResult } from  "zod";
+
+import type { ApiRequestParam, ApiError } from "../types/api";
+
 // ── frontend/src/services/api.ts ────────────────────────────────
 // Point d'entrée unique pour tous les appels HTTP
 // Centralise l'URL de base et les headers communs
@@ -11,28 +15,20 @@
 const BASE_URL = `http://${import.meta.env.VITE_API_MINILIB_HOST}:${import.meta.env.VITE_API_MINILIB_PORT}${import.meta.env.VITE_API_MINILIB_ROUTE}`
 
 // Type générique pour uniformiser les réponses
-export interface ApiError 
-{
-    erreur: string;
-    champs?: string[];
-}
 
 /**
 * Effectue une requête HTTP vers l'API MiniLib.
 * Lance une erreur si la réponse n'est pas OK (status >= 400).
-*
-* @param endpoint - Chemin relatif ex: "/livres" ou "/livres/1"
-* @param options - Options fetch standard (method, body, headers)
-* @returns - La réponse parsée en JSON typée T
 */
-export async function apiRequest<T>(
-    endpoint: string, 
-    options?: RequestInit
-): Promise<T> 
+export async function apiRequest<TResponse, TBody = unknown, TParams = unknown, TQuery = unknown>(
+    apiRequestParam: ApiRequestParam<TResponse, TBody, TParams, TQuery>
+): Promise<TResponse> 
 {
-    //const response = await fetch(`${BASE_URL}${endpoint}`, 
-    const response = await fetch(
-        `${BASE_URL}${endpoint}`, 
+    const { endpoint, schemaParam, schemaRespond, schemaBody, options } = apiRequestParam;
+    let json: any;
+
+    const response: Response = await fetch(`${BASE_URL}${endpoint}`, 
+    //const response = await fetch(`${url}`, 
         {
             headers: 
             { 
@@ -43,25 +39,42 @@ export async function apiRequest<T>(
         }
     );
 
-    //TODO: Raise error if message ok but message status is error
-    if (!response.ok) 
+    try 
     {
-        const erreur: ApiError = await response.json().catch(() => (
-                {
-                erreur: `Erreur HTTP ${response.status}`,
-                }
-            )
-        );
-        throw new Error(erreur.erreur);
+        // Try read Json message ( can be message info type but it'll be with response status not equal 200-299)
+        json = await response.json();
+    } 
+    catch
+    {
+        json = null;
+    }
+
+    if (!response.ok)
+    {
+        if ( json )
+        {
+            throw new Error(`Erreur JSON : ${json.message}`);
+        }
+        else
+        {
+            throw new Error(json?.erreur ?? `Erreur HTTP ${response.status}`);
+        }
     }
 
     // 204 No Content — pas de corps à parser (DELETE)
     if (response.status === 204) 
-        return undefined as T;
+        return undefined as TResponse;
+
+    // Validation with type before return
+    if ( schemaRespond )
+    {
+        const parsed: ZodSafeParseResult<TResponse> = schemaRespond.safeParse(json); 
+
+        if (!parsed.success) 
+            throw new Error(`JSON return from ${BASE_URL}${endpoint} invalide : ${parsed.error.message}`);
     
-    // 404 Content — mais livres non trouvé
-    if (response.status === 404) 
-        throw new Error("404: No data");
-        
-    return response.json() as Promise<T>;
+        return parsed.data;
+  }
+
+  return json as TResponse;
 }

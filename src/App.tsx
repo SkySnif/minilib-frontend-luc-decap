@@ -22,31 +22,50 @@ function App() {
 
           {/* livres */}
           <Route path="livres">
-            <Route path="list" element={<LivresList />} />
+            <Route path="list" element={<LivresList />} >
+              <Route path="update/:id" element={<LivresPageUpdate />} />
+            </Route>
 
             <Route path="search" element={<LivresPageRechercher />} >
               <Route path="list" element={<LivresList />} />
+              <Route path="update/:id" element={<LivresPageUpdate />} />
             </Route>
             
-            <Route path="update/:id" element={<LivresPageUpdate />} />
             <Route path="create/" element={<LivresPageCreate />} />
           </Route>
 
           {/* adherents */}
           <Route path="adherents">
 
+            <Route path="list" element={<LivresList />} >
+              <Route path="update/:id" element={<LivresPageUpdate />} />
+            </Route>
+
+            <Route path="search" element={<LivresPageRechercher />} >
+              <Route path="list" element={<LivresList />} />
+              <Route path="update/:id" element={<LivresPageUpdate />} />
+            </Route>
+            
+            <Route path="update/:id" element={<LivresPageUpdate />} />
+            <Route path="create/" element={<LivresPageCreate />} />
+          </Route>
+
+
+          {/* emprunts */}
+          <Route path="emprunts">
+
             <Route path="search" element={<LivresPageRechercher />}>
               <Route path="list" element={<LivresList />} />
             </Route>
 
+            <Route path="create" element={<h1>Créer</h1>} />
             <Route path="update" element={<h1>Créer</h1>} />
 
-            <Route path="create" element={<h1>Créer</h1>} />
             <Route path="delete" element={<h1>Supprimer</h1>} />
           </Route>
 
           {/* emprunts */}
-          <Route path="adherents">
+          <Route path="reports">
 
             <Route path="search" element={<LivresPageRechercher />}>
               <Route path="list" element={<LivresList />} />
