@@ -182,7 +182,6 @@ export function LivresPageCreate()
               {
                   if (livre) 
                   {
-                      alert(1);
                       setLivre(null);
                       resetLivreCreateDto(); // TODO => reset form value. Helper or Dto Form
                       setMessage( null)
