@@ -31,6 +31,7 @@ function App() {
               <Route path="update/:id" element={<LivresPageUpdate />} />
             </Route>
             
+            <Route path="update/:id" element={<LivresPageUpdate />} />
             <Route path="create/" element={<LivresPageCreate />} />
           </Route>
 
